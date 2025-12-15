@@ -17,6 +17,11 @@ class _MapDemoPageState extends State<MapDemoPage> {
           Container(
             height: 400,
             child: AMapWidget(
+              privacyStatement: const AMapPrivacyStatement(
+                hasContains: true,
+                hasShow: true,
+                hasAgree: true,
+              ),
               apiKey: const AMapApiKey(
                 androidKey: 'your_android_key',
                 iosKey: 'your_ios_key',
@@ -63,4 +68,3 @@ class _MapDemoPageState extends State<MapDemoPage> {
     );
   }
 }
-
