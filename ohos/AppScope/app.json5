@@ -1,6 +1,6 @@
 {
   "app": {
-    "bundleName": "com.example.flutter_universal_demo",
+    "bundleName": "com.liuchao.flutter_universal_demo",
     "vendor": "example",
     "versionCode": 1000000,
     "versionName": "1.0.0",
