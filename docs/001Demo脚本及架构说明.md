@@ -27,7 +27,7 @@
 #!/bin/bash
 # Flutter 通用全功能 UI Demo 自动生成脚本（带示例数据 Mock）
 
-PROJECT_NAME="flutter_universal_demo"
+PROJECT_NAME="flutter_super_app"
 
 echo "创建项目目录：$PROJECT_NAME"
 mkdir -p $PROJECT_NAME/lib/{config,modules/{splash,auth,home,settings,crash,analytics,carousel,demo},services/{network,storage,payment,utils,map,scan,share,screenshot},widgets,routes}
@@ -246,7 +246,7 @@ chmod +x generate_flutter_full_mock_demo.sh
 4. 进入项目目录运行：
 
 ```bash
-cd flutter_universal_demo
+cd flutter_super_app
 flutter pub get
 flutter pub run build_runner build --delete-conflicting-outputs
 flutter run
@@ -268,7 +268,7 @@ flutter run
 ---
 
 ```
-flutter_universal_demo/
+flutter_super_app/
 │
 ├── android/                             # 安卓原生配置
 │   └── app/src/main/

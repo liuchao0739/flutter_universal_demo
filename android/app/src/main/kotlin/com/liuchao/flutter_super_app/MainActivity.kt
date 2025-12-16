@@ -1,4 +1,4 @@
-package com.liuchao.flutter_universal_demo
+package com.liuchao.flutter_super_app
 
 import io.flutter.embedding.android.FlutterActivity
 
