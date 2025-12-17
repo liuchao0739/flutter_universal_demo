@@ -45,21 +45,55 @@ class _ProductListPageState extends ConsumerState<ProductListPage> {
   Widget build(BuildContext context) {
     final state = ref.watch(productListProvider);
     final notifier = ref.read(productListProvider.notifier);
+    final cartState = ref.watch(cartProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('商品列表'),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart_outlined),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const CartPage(),
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.shopping_cart_outlined),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CartPage(),
+                    ),
+                  );
+                },
+              ),
+              // 购物车角标：显示商品种类数量
+              if (cartState.items.isNotEmpty)
+                Positioned(
+                  right: 4,
+                  top: 4,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 16,
+                      minHeight: 16,
+                    ),
+                    child: Text(
+                      cartState.items.length > 99
+                          ? '99+'
+                          : '${cartState.items.length}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
-              );
-            },
+            ],
           ),
         ],
       ),
@@ -157,18 +191,22 @@ class _ProductListPageState extends ConsumerState<ProductListPage> {
     ProductListNotifier notifier,
     ProductListState state,
   ) {
-    showDialog(
+    showModalBottomSheet(
       context: context,
-      builder: (context) => ProductFilterDialog(
-        currentState: state,
-        onFilter: ({minPrice, maxPrice, sortBy}) {
-          notifier.filter(
-            minPrice: minPrice,
-            maxPrice: maxPrice,
-            sortBy: sortBy,
-          );
-        },
-      ),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return ProductFilterDialog(
+          currentState: state,
+          onFilter: ({minPrice, maxPrice, sortBy}) {
+            notifier.filter(
+              minPrice: minPrice,
+              maxPrice: maxPrice,
+              sortBy: sortBy,
+            );
+          },
+        );
+      },
     );
   }
 }

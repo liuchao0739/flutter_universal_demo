@@ -25,9 +25,11 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
   Map<String, String> _selectedSpecs = {};
   ProductSku? _selectedSku;
   int _quantity = 1;
+  OverlayEntry? _cartFlyOverlay;
 
   @override
   void dispose() {
+    _cartFlyOverlay?.remove();
     _imagePageController.dispose();
     super.dispose();
   }
@@ -81,16 +83,48 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
 
     await cartRepo.addToCart(cartItem);
 
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('已添加到购物车')),
-      );
-    }
+    if (!mounted) return;
+
+    // 刷新购物车状态，使角标数量立即更新
+    ref.read(cartProvider.notifier).loadCart();
+
+    _showAddToCartAnimation();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('已添加到购物车')),
+    );
+  }
+
+  /// 显示加入购物车的小车飞行动画
+  void _showAddToCartAnimation() {
+    final overlayState = Overlay.of(context);
+    _cartFlyOverlay?.remove();
+
+    final size = MediaQuery.of(context).size;
+    final start = Offset(size.width / 2, size.height - 80);
+    final end = Offset(size.width - 40, kToolbarHeight + 40);
+
+    _cartFlyOverlay = OverlayEntry(
+      builder: (context) {
+        return _CartFlyAnimation(
+          start: start,
+          end: end,
+        );
+      },
+    );
+
+    overlayState.insert(_cartFlyOverlay!);
+
+    Future.delayed(const Duration(milliseconds: 700), () {
+      _cartFlyOverlay?.remove();
+      _cartFlyOverlay = null;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final productAsync = ref.watch(productProvider(widget.productId));
+    final cartState = ref.watch(cartProvider);
 
     return Scaffold(
       body: productAsync.when(
@@ -128,16 +162,47 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                   ),
                 ),
                 actions: [
-                  IconButton(
-                    icon: const Icon(Icons.shopping_cart_outlined),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const CartPage(),
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.shopping_cart_outlined),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CartPage(),
+                            ),
+                          );
+                        },
+                      ),
+                      // 购物车角标：显示商品种类数量
+                      if (cartState.items.isNotEmpty)
+                        Positioned(
+                          right: 4,
+                          top: 4,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                            ),
+                            constraints: const BoxConstraints(
+                              minWidth: 16,
+                              minHeight: 16,
+                            ),
+                            child: Text(
+                              cartState.items.length > 99 ? '99+' : '${cartState.items.length}',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                         ),
-                      );
-                    },
+                    ],
                   ),
                 ],
               ),
@@ -236,6 +301,108 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
         },
       ),
     );
+  }
+}
+
+/// 加入购物车飞行动画小部件
+class _CartFlyAnimation extends StatefulWidget {
+  final Offset start;
+  final Offset end;
+
+  const _CartFlyAnimation({
+    Key? key,
+    required this.start,
+    required this.end,
+  }) : super(key: key);
+
+  @override
+  State<_CartFlyAnimation> createState() => _CartFlyAnimationState();
+}
+
+class _CartFlyAnimationState extends State<_CartFlyAnimation>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    )..forward();
+
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return IgnorePointer(
+      child: AnimatedBuilder(
+        animation: _animation,
+        builder: (context, child) {
+          final t = _animation.value;
+          // 简单二次贝塞尔曲线：从底部飞向右上角，路径稍微弯曲
+          final controlPoint = Offset(
+            (widget.start.dx + widget.end.dx) / 2,
+            widget.start.dy - 120,
+          );
+
+          final position = Offset(
+            _quadraticBezier(widget.start.dx, controlPoint.dx, widget.end.dx, t),
+            _quadraticBezier(widget.start.dy, controlPoint.dy, widget.end.dy, t),
+          );
+
+          final size = 24.0 * (1.0 - t * 0.3); // 飞行过程中稍微缩小一点
+
+          return Stack(
+            children: [
+              Positioned(
+                left: position.dx,
+                top: position.dy,
+                child: Transform.scale(
+                  scale: size / 24.0,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.all(4.0),
+                      child: Icon(
+                        Icons.shopping_cart,
+                        size: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  double _quadraticBezier(double p0, double p1, double p2, double t) {
+    return (1 - t) * (1 - t) * p0 + 2 * (1 - t) * t * p1 + t * t * p2;
   }
 }
 

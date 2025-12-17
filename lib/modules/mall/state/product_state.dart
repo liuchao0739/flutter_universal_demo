@@ -14,6 +14,9 @@ class ProductListState {
   final double? maxPrice;
   final String? sortBy;
 
+  // 用于区分 copyWith 中「不修改」和「显式设为 null」
+  static const Object _noChange = Object();
+
   ProductListState({
     this.products = const [],
     this.isLoading = false,
@@ -33,9 +36,9 @@ class ProductListState {
     int? currentPage,
     String? error,
     String? searchKeyword,
-    double? minPrice,
-    double? maxPrice,
-    String? sortBy,
+    Object? minPrice = _noChange,
+    Object? maxPrice = _noChange,
+    Object? sortBy = _noChange,
   }) {
     return ProductListState(
       products: products ?? this.products,
@@ -44,9 +47,11 @@ class ProductListState {
       currentPage: currentPage ?? this.currentPage,
       error: error,
       searchKeyword: searchKeyword ?? this.searchKeyword,
-      minPrice: minPrice ?? this.minPrice,
-      maxPrice: maxPrice ?? this.maxPrice,
-      sortBy: sortBy ?? this.sortBy,
+      minPrice:
+          identical(minPrice, _noChange) ? this.minPrice : minPrice as double?,
+      maxPrice:
+          identical(maxPrice, _noChange) ? this.maxPrice : maxPrice as double?,
+      sortBy: identical(sortBy, _noChange) ? this.sortBy : sortBy as String?,
     );
   }
 }
@@ -81,9 +86,7 @@ class ProductListNotifier extends StateNotifier<ProductListState> {
       );
 
       state = state.copyWith(
-        products: refresh
-            ? products
-            : [...state.products, ...products],
+        products: refresh ? products : [...state.products, ...products],
         isLoading: false,
         hasMore: products.length >= 20,
         currentPage: page + 1,
@@ -116,6 +119,17 @@ class ProductListNotifier extends StateNotifier<ProductListState> {
     await loadProducts(refresh: true);
   }
 
+  /// 重置搜索与筛选条件，恢复为“全部商品”
+  Future<void> resetFiltersAndSearch() async {
+    state = state.copyWith(
+      searchKeyword: '',
+      minPrice: null,
+      maxPrice: null,
+      sortBy: null,
+    );
+    await loadProducts(refresh: true);
+  }
+
   /// 刷新
   Future<void> refresh() async {
     await loadProducts(refresh: true);
@@ -129,8 +143,8 @@ final productListProvider =
 });
 
 /// 单个商品 Provider
-final productProvider = FutureProvider.family<Product?, String>((ref, id) async {
+final productProvider =
+    FutureProvider.family<Product?, String>((ref, id) async {
   final repository = ProductRepository();
   return await repository.getProductById(id);
 });
-

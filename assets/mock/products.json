@@ -5,9 +5,9 @@
     "description": "Apple iPhone 15 Pro Max，6.7英寸超视网膜XDR显示屏，A17 Pro芯片，钛金属设计，256GB存储",
     "price": 9999.00,
     "originalPrice": 10999.00,
-    "imageUrl": "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/iphone-15-pro-max-deep-purple-titanium_PF_REF?wid=2000&hei=2000&fmt=png-alpha&.v=1693009278906",
+    "imageUrl": "https://picsum.photos/seed/prod_001/600/600",
     "imageUrls": [
-      "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/iphone-15-pro-max-deep-purple-titanium_PF_REF?wid=2000&hei=2000&fmt=png-alpha&.v=1693009278906"
+      "https://picsum.photos/seed/prod_001/800/800"
     ],
     "tenantId": "apple_store",
     "tags": ["手机", "Apple", "5G", "高端"],
@@ -44,9 +44,9 @@
     "description": "Apple MacBook Pro 14英寸，M3芯片，18GB统一内存，512GB SSD存储",
     "price": 14999.00,
     "originalPrice": 15999.00,
-    "imageUrl": "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/mbp14-spacegray-select-202310?wid=2000&hei=2000&fmt=png-alpha&.v=1697230830209",
+    "imageUrl": "https://picsum.photos/seed/prod_002/600/600",
     "imageUrls": [
-      "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/mbp14-spacegray-select-202310?wid=2000&hei=2000&fmt=png-alpha&.v=1697230830209"
+      "https://picsum.photos/seed/prod_002/800/800"
     ],
     "tenantId": "apple_store",
     "tags": ["笔记本", "Apple", "M3", "专业"],
@@ -82,9 +82,9 @@
     "name": "AirPods Pro (第3代) 主动降噪",
     "description": "Apple AirPods Pro，主动降噪，空间音频，MagSafe充电盒",
     "price": 1899.00,
-    "imageUrl": "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/MQD83?wid=2000&hei=2000&fmt=png-alpha&.v=1660803972361",
+    "imageUrl": "https://picsum.photos/seed/prod_003/600/600",
     "imageUrls": [
-      "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/MQD83?wid=2000&hei=2000&fmt=png-alpha&.v=1660803972361"
+      "https://picsum.photos/seed/prod_003/800/800"
     ],
     "tenantId": "apple_store",
     "tags": ["耳机", "Apple", "降噪", "无线"],
@@ -108,9 +108,9 @@
     "description": "小米14 Ultra，徕卡四摄，骁龙8 Gen3，2K屏幕，120W快充",
     "price": 5999.00,
     "originalPrice": 6499.00,
-    "imageUrl": "https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/7c6c5c5c5c5c5c5c5c5c5c5c5c5c5c5c.jpg",
+    "imageUrl": "https://picsum.photos/seed/prod_004/600/600",
     "imageUrls": [
-      "https://cdn.cnbj1.fds.api.mi-img.com/mi-mall/7c6c5c5c5c5c5c5c5c5c5c5c5c5c5c5c.jpg"
+      "https://picsum.photos/seed/prod_004/800/800"
     ],
     "tenantId": "xiaomi_store",
     "tags": ["手机", "小米", "徕卡", "影像"],
@@ -141,9 +141,9 @@
     "description": "Nike Air Max 270，经典气垫设计，舒适缓震，多色可选",
     "price": 899.00,
     "originalPrice": 1099.00,
-    "imageUrl": "https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/b7d9211c-26e7-431a-ac24-b2010e00e96c/air-max-270-shoes-W27lzZ.png",
+    "imageUrl": "https://picsum.photos/seed/prod_005/600/600",
     "imageUrls": [
-      "https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco/b7d9211c-26e7-431a-ac24-b2010e00e96c/air-max-270-shoes-W27lzZ.png"
+      "https://picsum.photos/seed/prod_005/800/800"
     ],
     "tenantId": "nike_store",
     "tags": ["运动鞋", "Nike", "跑步", "休闲"],
@@ -181,9 +181,9 @@
     "description": "Dyson V15 Detect，激光探测技术，60分钟续航，HEPA过滤",
     "price": 4990.00,
     "originalPrice": 5490.00,
-    "imageUrl": "https://www.dyson.com/dam/jcr:1234567890/v15-detect.png",
+    "imageUrl": "https://picsum.photos/seed/prod_006/600/600",
     "imageUrls": [
-      "https://www.dyson.com/dam/jcr:1234567890/v15-detect.png"
+      "https://picsum.photos/seed/prod_006/800/800"
     ],
     "tenantId": "dyson_store",
     "tags": ["家电", "Dyson", "吸尘器", "无线"],
@@ -207,9 +207,9 @@
     "description": "Sony WH-1000XM5，业界领先降噪，30小时续航，Hi-Res音质",
     "price": 2999.00,
     "originalPrice": 3299.00,
-    "imageUrl": "https://www.sony.com/image/wh1000xm5.png",
+    "imageUrl": "https://picsum.photos/seed/prod_007/600/600",
     "imageUrls": [
-      "https://www.sony.com/image/wh1000xm5.png"
+      "https://picsum.photos/seed/prod_007/800/800"
     ],
     "tenantId": "sony_store",
     "tags": ["耳机", "Sony", "降噪", "Hi-Res"],
@@ -240,9 +240,9 @@
     "description": "Apple iPad Pro 12.9英寸，M2芯片，Liquid Retina XDR显示屏，256GB",
     "price": 8999.00,
     "originalPrice": 9499.00,
-    "imageUrl": "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/ipad-pro-12-9-select-202210?wid=2000&hei=2000&fmt=png-alpha&.v=1664413332684",
+    "imageUrl": "https://picsum.photos/seed/prod_008/600/600",
     "imageUrls": [
-      "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/ipad-pro-12-9-select-202210?wid=2000&hei=2000&fmt=png-alpha&.v=1664413332684"
+      "https://picsum.photos/seed/prod_008/800/800"
     ],
     "tenantId": "apple_store",
     "tags": ["平板", "Apple", "M2", "专业"],
@@ -273,9 +273,9 @@
     "description": "Tesla Model 3，后轮驱动，CLTC续航606公里，Autopilot自动辅助驾驶",
     "price": 229900.00,
     "originalPrice": 249900.00,
-    "imageUrl": "https://www.tesla.com/sites/default/files/model-3-social.png",
+    "imageUrl": "https://picsum.photos/seed/prod_009/600/600",
     "imageUrls": [
-      "https://www.tesla.com/sites/default/files/model-3-social.png"
+      "https://picsum.photos/seed/prod_009/800/800"
     ],
     "tenantId": "tesla_store",
     "tags": ["汽车", "Tesla", "电动车", "智能"],
@@ -299,9 +299,9 @@
     "description": "Canon EOS R6 Mark II，2420万像素，8K视频录制，双卡槽设计",
     "price": 15999.00,
     "originalPrice": 17999.00,
-    "imageUrl": "https://www.canon.com.cn/product/eosr6mark2/images/main.png",
+    "imageUrl": "https://picsum.photos/seed/prod_010/600/600",
     "imageUrls": [
-      "https://www.canon.com.cn/product/eosr6mark2/images/main.png"
+      "https://picsum.photos/seed/prod_010/800/800"
     ],
     "tenantId": "canon_store",
     "tags": ["相机", "Canon", "全画幅", "微单"],

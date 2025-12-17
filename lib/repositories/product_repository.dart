@@ -50,19 +50,19 @@ class ProductRepository {
   }) async {
     var products = await loadProducts();
 
+    // 标签筛选
+    if (tags != null && tags.isNotEmpty) {
+      products = products
+          .where((p) => p.tags.any((tag) => tags.contains(tag)))
+          .toList();
+    }
+
     // 价格筛选
     if (minPrice != null) {
       products = products.where((p) => p.price >= minPrice).toList();
     }
     if (maxPrice != null) {
       products = products.where((p) => p.price <= maxPrice).toList();
-    }
-
-    // 标签筛选
-    if (tags != null && tags.isNotEmpty) {
-      products = products
-          .where((p) => p.tags.any((tag) => tags.contains(tag)))
-          .toList();
     }
 
     // 排序
@@ -105,15 +105,45 @@ class ProductRepository {
     double? maxPrice,
     String? sortBy,
   }) async {
-    List<Product> products;
+    // 先拿到全部商品，然后依次叠加“搜索 + 筛选 + 排序”
+    var products = await loadProducts();
+
+    // 关键词搜索（名称 / 描述 / 标签）
     if (keyword != null && keyword.isNotEmpty) {
-      products = await searchProducts(keyword);
-    } else {
-      products = await filterProducts(
-        minPrice: minPrice,
-        maxPrice: maxPrice,
-        sortBy: sortBy,
-      );
+      products = products
+          .where((p) =>
+              p.name.toLowerCase().contains(keyword.toLowerCase()) ||
+              p.description.toLowerCase().contains(keyword.toLowerCase()) ||
+              p.tags.any(
+                (tag) => tag.toLowerCase().contains(keyword.toLowerCase()),
+              ))
+          .toList();
+    }
+
+    // 价格筛选
+    if (minPrice != null) {
+      products = products.where((p) => p.price >= minPrice).toList();
+    }
+    if (maxPrice != null) {
+      products = products.where((p) => p.price <= maxPrice).toList();
+    }
+
+    // 排序
+    if (sortBy != null) {
+      switch (sortBy) {
+        case 'price_asc':
+          products.sort((a, b) => a.price.compareTo(b.price));
+          break;
+        case 'price_desc':
+          products.sort((a, b) => b.price.compareTo(a.price));
+          break;
+        case 'sales_desc':
+          products.sort((a, b) => b.salesCount.compareTo(a.salesCount));
+          break;
+        case 'rating_desc':
+          products.sort((a, b) => b.rating.compareTo(a.rating));
+          break;
+      }
     }
 
     final start = (page - 1) * pageSize;

@@ -101,6 +101,13 @@ class CartRepository {
     await _saveCartItems([]);
   }
 
+  /// 删除所有已选中的商品
+  Future<void> removeSelectedItems() async {
+    final items = await getCartItems();
+    items.removeWhere((i) => i.isSelected);
+    await _saveCartItems(items);
+  }
+
   Future<void> _saveCartItems(List<CartItem> items) async {
     final box = await Hive.openBox(_boxName);
     final itemsJson = json.encode(items.map((i) => i.toJson()).toList());
@@ -116,8 +123,8 @@ class CartRepository {
     double? discountAmount,
   }) async {
     final selectedItems = items.where((i) => i.isSelected).toList();
-    final totalAmount = selectedItems.fold(
-        0.0, (sum, item) => sum + item.totalPrice);
+    final totalAmount =
+        selectedItems.fold(0.0, (sum, item) => sum + item.totalPrice);
     final finalAmount = totalAmount - (discountAmount ?? 0);
 
     final order = Order(
@@ -131,7 +138,8 @@ class CartRepository {
       receiverName: receiverName,
       receiverPhone: receiverPhone,
       createTime: DateTime.now(),
-      tenantId: selectedItems.isNotEmpty ? selectedItems.first.tenantId : 'default',
+      tenantId:
+          selectedItems.isNotEmpty ? selectedItems.first.tenantId : 'default',
     );
 
     await _saveOrder(order);
@@ -204,4 +212,3 @@ class CartRepository {
     await box.put('orders', ordersJson);
   }
 }
-
